@@ -50,7 +50,7 @@ const rules: FormRules = {
   ],
 };
 
-const messageTip = (message: string, type: MessageType) => {
+const messageTip = (message: string, type: MessageType): void => {
   ElMessage({
     message,
     type,
@@ -58,7 +58,7 @@ const messageTip = (message: string, type: MessageType) => {
 };
 
 // 注册新用户
-const goRegister = (formEl: FormInstance | undefined) => {
+const goRegister = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
@@ -75,14 +75,14 @@ const goRegister = (formEl: FormInstance | undefined) => {
 };
 
 // 登录
-const goLogin = (formEl: FormInstance | undefined) => {
+const goLogin = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
-  formEl.validate((valid) => {
+  formEl.validate((valid): void => {
     if (valid) {
       getUserLogin({
         username: userForm.value.username,
         password: userForm.value.password,
-      }).then((res) => {
+      }).then((res): void => {
         messageTip(TIPS_SUCCESS.loginSuccess, "success");
         if (res?.data?.access_token) {
           // 存储 token 到 cookie 中

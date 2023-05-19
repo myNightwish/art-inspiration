@@ -1,4 +1,4 @@
 export const URL = {
-  getUserInfo: "api/user/register",
+  getUserInfo: "api/auth/register",
   getUserLogin: "api/auth/login",
 };
