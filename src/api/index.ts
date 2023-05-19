@@ -4,9 +4,6 @@ import { URL } from "./urls";
 export function getUserRegister(postData) {
   return axios(URL.getUserInfo, {
     method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
     data: postData,
   });
 }
@@ -15,9 +12,6 @@ export function getUserLogin(postData) {
   // 这个必须加鉴权能力，请求头携带过去
   return axios(URL.getUserLogin, {
     method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
     data: postData,
   });
 }
