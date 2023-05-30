@@ -16,3 +16,14 @@ export function getUserLogin(postData): AxiosPromise<any> {
     data: postData,
   });
 }
+
+export function getAllTasklist(): AxiosPromise<any> {
+  return axios(URL.getAllTasklist);
+}
+
+export function postCreateTask(postData): AxiosPromise<any> {
+  return axios(URL.createTask, {
+    method: "post",
+    data: postData,
+  });
+}

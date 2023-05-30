@@ -31,7 +31,7 @@ import { ElMessage } from "element-plus";
 import type { FormInstance, FormRules } from "element-plus";
 import { setCookie } from "@/utils/cookie";
 import { TIPS_SUCCESS, TIPS_FAIL } from "@/utils/const";
-import type { LoginForm, MessageType } from "@/utils/types/index";
+import type { LoginForm, MessageType } from "@/types/index";
 
 const userForm: Ref<LoginForm> = ref({
   username: "",
