@@ -23,24 +23,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import type { Ref } from "vue";
 import { getUserRegister, getUserLogin } from "@/api/index";
-
-export interface LoginForm {
-  username: string;
-  password: string;
-}
-
+import { ElMessage } from "element-plus";
 import type { FormInstance, FormRules } from "element-plus";
+import { setCookie } from "@/utils/cookie";
+import { TIPS_SUCCESS, TIPS_FAIL } from "@/utils/const";
+import type { LoginForm, MessageType } from "@/types/index";
 
 const userForm: Ref<LoginForm> = ref({
   username: "",
   password: "",
 });
 const loginForm = ref<FormInstance>();
-
-const rules = {
+const router = useRouter();
+const rules: FormRules = {
   username: [
     { required: true, message: "请输入用户名", trigger: "blur" },
     { min: 2, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur" },
@@ -51,39 +50,48 @@ const rules = {
   ],
 };
 
+const messageTip = (message: string, type: MessageType): void => {
+  ElMessage({
+    message,
+    type,
+  });
+};
+
 // 注册新用户
-const goRegister = (formEl: FormInstance | undefined) => {
+const goRegister = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
       getUserRegister({
         username: userForm.value.username,
         password: userForm.value.password,
-      }).then((res) => {
-        console.log("您已成功注册为新用户---", res);
+      }).then(() => {
+        messageTip(TIPS_SUCCESS.registerSuccess, "success");
       });
     } else {
-      console.log("error submit!!");
-      return false;
+      messageTip(TIPS_FAIL.registerFail, "error");
     }
   });
 };
 
 // 登录
-const goLogin = (formEl: FormInstance | undefined) => {
-  console.log("loginForm--", userForm);
+const goLogin = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
-  formEl.validate((valid) => {
+  formEl.validate((valid): void => {
     if (valid) {
       getUserLogin({
         username: userForm.value.username,
         password: userForm.value.password,
-      }).then((res) => {
-        console.log(res);
+      }).then((res): void => {
+        messageTip(TIPS_SUCCESS.loginSuccess, "success");
+        if (res?.data?.access_token) {
+          // 存储 token 到 cookie 中
+          setCookie("access_token", res?.data?.access_token);
+          router.push({ path: "/home" });
+        }
       });
     } else {
-      console.log("error submit!!");
-      return false;
+      messageTip(TIPS_FAIL.loginFail, "error");
     }
   });
 };
